@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
+import sys
 import argparse
 
 liste_des_format_de_sortie = ['m3u','xspf','pls']
@@ -28,14 +30,18 @@ mes_args = mon_parser_general.parse_args()
 def validerQuantite(quantite):
     try:
         good = int(quantite)
+        if good <= 0:
+            raise Exception('UnderGround')
         return good
     except ValueError:
-        print("La valeur saisie pour la quantité n'est pas une valeur numérique : '" + quantite + "'")
+        print("La valeur saisie pour la quantité n'est pas une valeur numérique : '" + quantite + "'", file=sys.stderr)
         exit(1)
+    except Exception as err:
+        if err.args[0] == 'UnderGround':
+            print("La valeur saisie pour la quantité ne peut être négative : '%i'" % good, file=sys.stderr)
+            exit(1)
 
 mes_args.genre[1] = validerQuantite(mes_args.genre[1])
-
-print(mes_args)
 
 
 
