@@ -9,7 +9,7 @@ non_regexp_group = mon_parser_general.add_argument_group("Simple filtering optio
 regexp_group = mon_parser_general.add_argument_group("RegExp filtering")
 
 mon_parser_general.add_argument("--time", required=True, type=int, help="Total playlist length, in minutes")
-mon_parser_general.add_argument("--output", nargs=2, help="Output format "+str(liste_des_format_de_sortie)+" followed by filename (absolute or relative path, or '-' for stdout)")
+mon_parser_general.add_argument("--output", nargs=2, help="Output format "+str(liste_des_format_de_sortie)+" followed by filename (absolute or relative path, or '-' for stdout)", default=['m3u','-'])
 
 non_regexp_group.add_argument("-g", "--genre", nargs=2, help="Genre to include to playlist, followed by the %% quantity")
 non_regexp_group.add_argument("-s", "--sub-genre", nargs=2, help="Sub-genre to include to playlist, followed by the %% quantity")
@@ -26,7 +26,12 @@ regexp_group.add_argument("-T", "--RE-title", nargs=2, help="Track title to incl
 mes_args = mon_parser_general.parse_args()
 
 def validerQuantite(quantite):
-    return int(quantite)
+    try:
+        good = int(quantite)
+        return good
+    except ValueError:
+        print("La valeur saisie pour la quantité n'est pas une valeur numérique : '" + quantite + "'")
+        exit(1)
 
 mes_args.genre[1] = validerQuantite(mes_args.genre[1])
 
