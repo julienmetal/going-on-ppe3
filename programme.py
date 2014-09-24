@@ -25,6 +25,11 @@ regexp_group.add_argument("-T", "--RE-title", nargs=2, help="Track title to incl
 
 mes_args = mon_parser_general.parse_args()
 
+def validerQuantite(quantite):
+    return int(quantite)
+
+mes_args.genre[1] = validerQuantite(mes_args.genre[1])
+
 print(mes_args)
 
 
