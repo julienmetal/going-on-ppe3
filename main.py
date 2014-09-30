@@ -62,4 +62,8 @@ def main():
 
 
 if __name__ == "__main__":
+    min_version = (3,2)
+    if sys.version_info < min_version :
+        logging.critical("Python %i.%i is required" % (min_version[0],min_version[1]))
+        sys.exit(1)
     main()
