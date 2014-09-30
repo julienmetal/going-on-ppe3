@@ -5,24 +5,8 @@ import sys
 import argparse
 import logging
 
-liste_des_formats_de_sortie = ['m3u','xspf','pls']
-liste_des_options_a_valider_quantite = [
-    'genre',
-    'sub_genre',
-    'band',
-    'album',
-    'title',
-    'RE_genre',
-    'RE_sub_genre',
-    'RE_band',
-    'RE_album',
-    'RE_title',
-]
-mes_args = argparse.Namespace()
-
-
 def setLoggingLevelAccordingToCLI(logLevel):
-    logging.basicConfig(level=getattr(logging,logLevel), format='%(asctime)s %(levelname)s:%(message)s')
+    logging.basicConfig(level=getattr(logging,logLevel), format='%(asctime)s %(filename)s(%(process)s) %(levelname)s:%(message)s')
 
 
 def validerQuantite(quantite):
@@ -80,8 +64,23 @@ def main():
 
 
 if __name__ == "__main__":
+    liste_des_formats_de_sortie = ['m3u','xspf','pls']
+    liste_des_options_a_valider_quantite = [
+        'genre',
+        'sub_genre',
+        'band',
+        'album',
+        'title',
+        'RE_genre',
+        'RE_sub_genre',
+        'RE_band',
+        'RE_album',
+        'RE_title',
+    ]
+    mes_args = argparse.Namespace()
     min_version = (3,2)
     if sys.version_info < min_version :
         logging.critical("Python %i.%i is required" % (min_version[0],min_version[1]))
         sys.exit(1)
     main()
+    logging.shutdown()
