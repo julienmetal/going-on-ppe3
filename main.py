@@ -10,7 +10,7 @@ mes_args = argparse.Namespace()
 
 
 def setLoggingLevelAccordingToCLI(logLevel):
-    logging.basicConfig(level=getattr(logging,logLevel))
+    logging.basicConfig(level=getattr(logging,logLevel), format='%(asctime)s %(levelname)s:%(message)s')
 
 
 def validerQuantite(quantite):
