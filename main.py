@@ -21,11 +21,11 @@ def validerQuantite(quantite):
         logging.debug("Quantity '%i' is correct")
         return good
     except ValueError:
-        logging.error("La valeur saisie pour la quantité n'est pas une valeur numérique : '" + quantite + "'")
+        logging.error("Quantity Input value is Not A Number (NaN): '" + quantite + "'")
         exit(1)
     except Exception as err:
         if err.args[0] == 'UnderGround':
-            logging.error("La valeur saisie pour la quantité ne peut être négative : '%i'" % good)
+            logging.error("Quantity Input value can not be negative: '%i'" % good)
             exit(1)
 
 
