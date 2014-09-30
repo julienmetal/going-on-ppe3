@@ -5,7 +5,19 @@ import sys
 import argparse
 import logging
 
-liste_des_format_de_sortie = ['m3u','xspf','pls']
+liste_des_formats_de_sortie = ['m3u','xspf','pls']
+liste_des_options_a_valider_quantite = [
+    'genre',
+    'sub_genre',
+    'band',
+    'album',
+    'title',
+    'RE_genre',
+    'RE_sub_genre',
+    'RE_band',
+    'RE_album',
+    'RE_title',
+]
 mes_args = argparse.Namespace()
 
 
@@ -14,11 +26,12 @@ def setLoggingLevelAccordingToCLI(logLevel):
 
 
 def validerQuantite(quantite):
+    logging.debug("Validating argument:'%s'" % quantite)
     try:
         good = int(quantite)
         if good <= 0:
             raise Exception('UnderGround')
-        logging.debug("Quantity '%i' is correct")
+        logging.debug("'%i' is OK!" % good)
         return good
     except ValueError:
         logging.error("Quantity Input value is Not A Number (NaN): '" + quantite + "'")
@@ -36,7 +49,7 @@ def parsingCLI():
     regexp_group = mon_parser_general.add_argument_group("RegExp filtering")
     mon_parser_general.add_argument("--log", choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'], default='WARNING')
     mon_parser_general.add_argument("--time", required=True, type=int, help="Total playlist length, in minutes")
-    mon_parser_general.add_argument("--output", nargs=2, help="Output format "+str(liste_des_format_de_sortie)+" followed by filename (absolute or relative path, or '-' for stdout)", default=['m3u','-'])
+    mon_parser_general.add_argument("--output", nargs=2, help="Output format "+str(liste_des_formats_de_sortie)+" followed by filename (absolute or relative path, or '-' for stdout)", default=['m3u','-'])
 
     non_regexp_group.add_argument("-g", "--genre", nargs=2, metavar=('GENRE','QUANTITY'), help="Genre to include to playlist, followed by the %% quantity")
     non_regexp_group.add_argument("-s", "--sub-genre", nargs=2, metavar=('SUB_GENRE','QUANTITY'), help="Sub-genre to include to playlist, followed by the %% quantity")
@@ -57,8 +70,13 @@ def main():
     parsingCLI()
     setLoggingLevelAccordingToCLI(mes_args.log)
     logging.debug("Command line arguments:" + repr(mes_args))
-    logging.debug("Validating arguments:")
-    mes_args.genre[1] = validerQuantite(mes_args.genre[1])
+    for option in liste_des_options_a_valider_quantite:
+        logging.debug("Examining '%s' option" % option)
+        if getattr(mes_args,option) is not None:
+            setattr(mes_args, option, [getattr(mes_args,option)[0] , validerQuantite(getattr(mes_args,option)[1])])
+        else:
+            logging.warning("'%s' is empty or not defined on CLI" % option)
+    logging.debug("Updated namespace:" + repr(mes_args))
 
 
 if __name__ == "__main__":
