@@ -29,7 +29,7 @@ def validerQuantite(quantite):
             exit(1)
 
 
-def parsingCLI():    
+def parsingCLI():
     global mes_args
     mon_parser_general = argparse.ArgumentParser()
     non_regexp_group = mon_parser_general.add_argument_group("Simple filtering options")
