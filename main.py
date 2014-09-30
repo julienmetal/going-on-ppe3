@@ -10,6 +10,7 @@ def setLoggingLevelAccordingToCLI(logLevel):
 
 
 def validerQuantite(quantite):
+    global my_error
     logging.debug("Validating argument:'%s'" % quantite)
     try:
         good = int(quantite)
@@ -19,11 +20,13 @@ def validerQuantite(quantite):
         return good
     except ValueError:
         logging.error("Quantity Input value is Not A Number (NaN): '" + quantite + "'")
-        exit(1)
+        my_error += 1
+        return None
     except Exception as err:
         if err.args[0] == 'UnderGround':
             logging.error("Quantity Input value can not be negative: '%i'" % good)
-            exit(1)
+            my_error += 1
+        return None
 
 
 def parsingCLI():
@@ -49,10 +52,26 @@ def parsingCLI():
     mes_args = mon_parser_general.parse_args()
 
 
-def main():
+if __name__ == "__main__":
     global mes_args
+    global my_error
+
+    my_error = 0
+    liste_des_formats_de_sortie = ['m3u','xspf','pls']
+    liste_des_options_a_valider_quantite = [
+        'genre','sub_genre','band','album','title',
+        'RE_genre','RE_sub_genre','RE_band','RE_album','RE_title',
+    ]
+    mes_args = argparse.Namespace()
+    min_version = (3,2)
+
+    if sys.version_info < min_version :
+        logging.critical("Python %i.%i is required" % (min_version[0],min_version[1]))
+        sys.exit(255)
+
     parsingCLI()
     setLoggingLevelAccordingToCLI(mes_args.log)
+
     logging.debug("Command line arguments:" + repr(mes_args))
     for option in liste_des_options_a_valider_quantite:
         logging.debug("Examining '%s' option" % option)
@@ -62,25 +81,7 @@ def main():
             logging.warning("'%s' is empty or not defined on CLI" % option)
     logging.debug("Updated namespace:" + repr(mes_args))
 
+    if my_error>0:
+        sys.exit(my_error)
 
-if __name__ == "__main__":
-    liste_des_formats_de_sortie = ['m3u','xspf','pls']
-    liste_des_options_a_valider_quantite = [
-        'genre',
-        'sub_genre',
-        'band',
-        'album',
-        'title',
-        'RE_genre',
-        'RE_sub_genre',
-        'RE_band',
-        'RE_album',
-        'RE_title',
-    ]
-    mes_args = argparse.Namespace()
-    min_version = (3,2)
-    if sys.version_info < min_version :
-        logging.critical("Python %i.%i is required" % (min_version[0],min_version[1]))
-        sys.exit(1)
-    main()
     logging.shutdown()
