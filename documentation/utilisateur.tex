@@ -18,104 +18,176 @@
   \setDate{\today}
   \setVersion{0}
 }
+
 \begin{document}
 
-\begin{Name}{1}{generateurPlaylist}{Grégory DAVID}{Générateur de playlist}{Un générateur de playlist}
+\begin{Name}{1}{playlistGenerator}{Grégory DAVID}{Playlist generator}{A simple playlist generator}
 
-  \Prog{generateurPlaylist} est un outil permettant de générer des fichiers de playlist pour les lecteurs multimedia.
-  Sa documentation est fournie au moins en page de manuel accessible
-  à l'aide de la commande \Cmd{man}{1}.
+    \Prog{playlistGenerator} is a playlist generator tool based on a
+    remote musical database. You can specify proportions, according to:
+    \begin{itemize}
+        \item genre
+        \item sub-genre
+        \item track title
+        \item album name
+        \item band or artist name
+    \end{itemize}
 \end{Name}
 
 \section{Synopsis}
 %%%%%%%%%%%%%%%%%%
-
-\Prog{generateurPlaylist} \OptArg{-d}{dureetotale}
-                 \OptArg{--genre}{ youpi} \Arg{50}
-                 \oOpt{-h}
-                 \oOpt{-V}
-                 \Arg{sortieM3U}
-
-\Prog{generateurPlaylist}
- \oOpt{-h}
- \oOptArg{--log}{\{DEBUG,INFO,\emph{WARNING},ERROR,CRITICAL\}}
- \oOptArg{--output}{OUTPUT\_FORMAT}
-
- % --time TIME
- %               [--output OUTPUT OUTPUT] [-g GENRE QUANTITY]
- %               [-s SUB_GENRE QUANTITY] [-b BAND_NAME QUANTITY]
- %               [-a ALBUM_NAME QUANTITY] [-t TRACK_TITLE QUANTITY]
- %               [-G GENRE QUANTITY] [-S SUB_GENRE QUANTITY]
- %               [-B BAND_NAME QUANTITY] [-A ALBUM_NAME QUANTITY]
- %               [-T TRACK_TITLE QUANTITY]
+\Prog{playlistGenerator}
+ \oOpt{-h}\\
+ \SP\oOptArg{--log }{\{DEBUG,INFO,WARNING,ERROR,CRITICAL\}}\\
+ \SP\oOptArg{--output }{\{m3u,xspf,pls\} FILENAME} \\
+ \SP\oOptArg{(-g\Bar--genre) }{GENRE QUANTITY}\\
+ \SP\oOptArg{(-s\Bar--sub-genre) }{SUB\_GENRE QUANTITY}\\
+ \SP\oOptArg{(-b\Bar--band) }{BAND\_NAME QUANTITY}\\
+ \SP\oOptArg{(-a\Bar--album) }{ALBUM QUANTITY}\\
+ \SP\oOptArg{(-t\Bar--title) }{TRACK\_TITLE QUANTITY}\\
+ \SP\oOptArg{(-G\Bar--RE-genre) }{GENRE QUANTITY}\\
+ \SP\oOptArg{(-S\Bar--RE-sub-genre) }{SUB\_GENRE QUANTITY}\\
+ \SP\oOptArg{(-B\Bar--RE-band) }{BAND\_NAME QUANTITY}\\
+ \SP\oOptArg{(-A\Bar--RE-album) }{ALBUM QUANTITY}\\
+ \SP\oOptArg{(-T\Bar--RE-title) }{TRACK\_TITLE QUANTITY}\\
 
 \section{Description}
 %%%%%%%%%%%%%%%%%%%%%
-\Prog{generateurPlaylist} sert à générer un fichier de playlist \File{sortieM3U} au format M3U afin de blablabla.
+\Prog{playlistGenerator} aimed to generate an outputed playlist file
+(i.e.: \File{\Tilde/path/to/my/playlist}) according to the user
+selected output format.
 
-La description des différentes options se trouve dans la section suivante.
+Options ares described in section OPTIONS.
 
 \section{Options}
 %%%%%%%%%%%%%%%%%
-% [-h] [--log {DEBUG,INFO,WARNING,ERROR,CRITICAL}] --time TIME
-%                [--output OUTPUT OUTPUT] [-g GENRE QUANTITY]
-%                [-s SUB_GENRE QUANTITY] [-b BAND_NAME QUANTITY]
-%                [-a ALBUM_NAME QUANTITY] [-t TRACK_TITLE QUANTITY]
-%                [-G GENRE QUANTITY] [-S SUB_GENRE QUANTITY]
-%                [-B BAND_NAME QUANTITY] [-A ALBUM_NAME QUANTITY]
-%                [-T TRACK_TITLE QUANTITY]
+%   --time LENGTH_IN_MINUTES
+%                         Total playlist length, in minutes
+%   --log {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+%   --output {m3u,xspf,pls} FILENAME
+%                         Output format {m3u,xspf,pls} followed by filename
+%                         (absolute or relative path, or '-' for stdout)
 
 \begin{Description}\setlength{\itemsep}{0cm}
-\item[\OptArg{-d}{dureetotale}] Specifie la durée totale que devra faire la playlist.
-\item[\OptArg{--genre}{"formatgenre"}] Permet de définir le ou les genres à prendre en compte. Le formalisme correspond à blablablabla.
-\item[\Opt{-h}] Affiche un message d'aide.
-\item[\Opt{-V}] Affiche les informations de version.
+    \item[\Opt{-h}\Bar\Opt{--help}] show this help message and exit
+    % \item[\Opt{-V}] Affiche les informations de version.
+
+    \item[\OptArg{--time }{LENGTH\_IN\_MINUTES}] Total playlist
+    length, in minutes
+    \item[\OptArg{--log }{DEBUG\Bar INFO\Bar WARNING\Bar ERROR\Bar CRITICAL}]
+    Defines the log level
+
+
+    \item[\Opt{-g}\Bar\Opt{--genre} \Arg{GENRE} \Arg{QUANTITY}] genre
+    to be included to playlist, followed by the \% quantity (see
+    RULES)
+    \item[\Opt{-s}\Bar\Opt{--sub-genre} \Arg{SUB\_GENRE} \Arg{QUANTITY}]
+    sub-genre to be included to playlist, followed by
+    the \% quantity (see RULES)
+    \item[\Opt{-b}\Bar\Opt{--band} \Arg{BAND\_NAME} \Arg{QUANTITY}]
+    band to be included to playlist, followed by the \% quantity (see
+    RULES)
+    \item[\Opt{-a}\Bar\Opt{--album} \Arg{ALBUM} \Arg{QUANTITY}] album
+    to be included to playlist, followed by the \% quantity (see
+    RULES)
+    \item[\Opt{-t}\Bar\Opt{--title} \Arg{TRACK\_TITLE} \Arg{QUANTITY}]
+    title to be included to playlist, followed by the \% quantity (see
+    RULES)
+
+    \item[\Opt{-G}\Bar\Opt{--RE-genre} \Arg{GENRE} \Arg{QUANTITY}]
+    Regular Expression defining a genre to be included to playlist,
+    followed by the \% quantity (see RULES, REGEXP)
+    \item[\Opt{-S}\Bar\Opt{--RE-sub-genre} \Arg{SUB\_GENRE} \Arg{QUANTITY}]
+    Regular Expression defining a sub-genre to be
+    included to playlist, followed by the \% quantity (see RULES, REGEXP)
+    \item[\Opt{-B}\Bar\Opt{--RE-band} \Arg{BAND\_NAME} \Arg{QUANTITY}]
+    Regular Expression defining a band to be included to playlist,
+    followed by the \% quantity (see RULES, REGEXP)
+    \item[\Opt{-A}\Bar\Opt{--RE-album} \Arg{ALBUM} \Arg{QUANTITY}]
+    Regular Expression defining a album to be included to playlist,
+    followed by the \% quantity (see RULES, REGEXP)
+    \item[\Opt{-T}\Bar\Opt{--RE-title} \Arg{TRACK\_TITLE} \Arg{QUANTITY}]
+    Regular Expression defining a title to be included
+    to playlist, followed by the \% quantity (see RULES, REGEXP)
 \end{Description}
 
-\section{Fichiers}
+
+\section{Rules}
+%%%%%%%%%%%%%%
+
+The quantity defined the \% of the corresponding option to be included
+in the output playlist. The quantity rules are:
+\begin{enumerate}
+    \item must be an integer, else an error is produced and
+    \Prog{playlistGenerator} exits
+    \item if the value is negative, absolute value is kept and
+    \Prog{playlistGenerator} continues
+    \item if the value is greater than 100\%, the value is replaced by
+    the best value fitting the length left space
+\end{enumerate}
+
+
+\section{RegExp}
+%%%%%%%%%%%%%%%
+
+If you want to use RegExp, you have to follow the Python \Prog{re}
+module implementation:
+\URL{https://docs.python.org/3.2/library/re.html}
+
+An error inside Python \Prog{re} module will result in a logged exit
+
+\section{Files}
 %%%%%%%%%%%%%%%
 
 \begin{Description}\setlength{\itemsep}{0cm}
-\item[\File{/usr/local/bin/generateurPlaylist}] Le programme principal.
-\item[\File{/etc/generateurPlaylist.cfg}] Le fichier de configuration du programme.
+    \item[\File{/usr/local/bin/playlistGenerator}] Program file
+    \item[\File{/var/log/playlistGenerator.log}] log file
 \end{Description}
 
-\section{À voir aussi}
+\section{See also}
 %%%%%%%%%%%%%%%%%%
 
 \Cmd{vlc}{1}, \Cmd{mp3rename}{1}.
 
-\section{Traduction}
+\section{Translation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-L'application a été écrite en langue anglaise, traduite en
-français. Nous recherchons des traducteurs dans les langues : English,
-German, Italian, Spanish, Russian, Chinese, Japanese.
 
-\section{Pré-requis}
+Originaly written in English, we need translations to foreign languages:
+\begin{itemize}
+    \item German
+    \item Italian
+    \item Spanish
+    \item Russian
+    \item Chinese
+    \item Japanese
+\end{itemize}
+
+\section{Requirements}
 %%%%%%%%%%%%%%%%%%%%%%
 
 \begin{description}\setlength{\itemsep}{0cm}
-\item[python] \Prog{generateurPlaylist} a besoin de \Prog{python} version $>=$ 2.7.
-\item[scons] Si vous souhaitez installer proprement l'application, il est intéressant
-     de disposer du programme \Prog{scons}.
+    \item[python] $>=$ 3.2
+    \item[sqlalchemy] $>=$ 0.9.7, to access remote database
 \end{description}
 
 \section{Version}
 %%%%%%%%%%%%%%%%%
 
-Version : \gitVtags \Version du \Date.
+Version : git@\Version\ du \Date.
 
-\section{Licence et Copyright}
+\section{License and Copyright}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{description}
-\item[Copyright] \copyright\ 2012, Grégory DAVID, 3 rue Beau Soleil, 72700 Allonnes
-\item[Licence] Indiquer les termes succins de la licence d'utilisation.
+    \item[Copyright] \copyright\ 2012, Grégory DAVID, 3 rue Beau
+    Soleil, 72700 Allonnes
+    \item[Licence] GPLv3.
 
-\item[Misc] If you find this software useful, please send me a postcard.
+    \item[Misc] If you find this software useful, please send me a
+    postcard.
 \end{description}
 
-\section{Auteur}
+\section{Author}
 %%%%%%%%%%%%%%%%
 
 \noindent
@@ -123,7 +195,8 @@ Grégory DAVID                      \\
 3 rue Beau Soleil                       \\
 72700 Allonnes                       \\
 Email: \Email{gregory.david@ac-nantes.fr}  \\
-WWW: \URL{http://www.bts-malraux72.net}.
+WWW: \URL{http://www.bts-malraux72.net}.\\
+
 \LatexManEnd
 
 \end{document}
