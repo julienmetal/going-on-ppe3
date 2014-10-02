@@ -25,7 +25,6 @@ class appendTypeQuantity(argparse.Action):
         current_dest_value = getattr(namespace, self.dest)
         if type(current_dest_value) is list:
             current_dest_value.append(values)
-            #new_list = current_dest_value
             setattr(namespace, self.dest, current_dest_value)
         else:
             logging.debug(values)
