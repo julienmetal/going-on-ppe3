@@ -76,11 +76,14 @@ Options ares described in section OPTIONS.
     length, in minutes
     \item[\OptArg{--log }{DEBUG\Bar INFO\Bar WARNING\Bar ERROR\Bar CRITICAL}]
     Defines the log level
-    \item[\OptArg{--output}{m3u\Bar xspf\Bar pls} \Arg{FILENAME}] Sets
+    \item[\OptArg{--output }{m3u\Bar xspf\Bar pls} \Arg{FILENAME}] Sets
     the output format, one of {m3u,xspf,pls}, and defines the
     \Arg{FILENAME} to save playlist to
 
+\end{Description}
 
+\subsection{Non-RegExp filtering options}
+\begin{Description}
     \item[\Opt{-g}\Bar\Opt{--genre} \Arg{GENRE} \Arg{QUANTITY}] genre
     to be included to playlist, followed by the \% quantity (see
     RULES)
@@ -96,13 +99,17 @@ Options ares described in section OPTIONS.
     \item[\Opt{-t}\Bar\Opt{--title} \Arg{TRACK\_TITLE} \Arg{QUANTITY}]
     title to be included to playlist, followed by the \% quantity (see
     RULES)
+\end{Description}
 
+\subsection{RegExp filtering options}
+\begin{Description}
     \item[\Opt{-G}\Bar\Opt{--RE-genre} \Arg{GENRE} \Arg{QUANTITY}]
     Regular Expression defining a genre to be included to playlist,
     followed by the \% quantity (see RULES, REGEXP)
     \item[\Opt{-S}\Bar\Opt{--RE-sub-genre} \Arg{SUB\_GENRE} \Arg{QUANTITY}]
     Regular Expression defining a sub-genre to be
-    included to playlist, followed by the \% quantity (see RULES, REGEXP)
+    included to playlist, followed by the \% quantity (see RULES,
+    REGEXP)
     \item[\Opt{-B}\Bar\Opt{--RE-band} \Arg{BAND\_NAME} \Arg{QUANTITY}]
     Regular Expression defining a band to be included to playlist,
     followed by the \% quantity (see RULES, REGEXP)
@@ -116,8 +123,10 @@ Options ares described in section OPTIONS.
 
 
 \section{Database structure}
-The standard database structure is as following:
+The standard PostgreSQL database structure is as following:
 \begin{verbatim}
+SET client_encoding = 'UTF8';
+
 CREATE TABLE morceaux (
     titre text,
     album text,
@@ -129,6 +138,7 @@ CREATE TABLE morceaux (
     polyphonie integer,
     chemin text NOT NULL
 );
+
 ALTER TABLE ONLY morceaux
     ADD CONSTRAINT pk_morceaux PRIMARY KEY (chemin);
 \end{verbatim}
@@ -160,6 +170,11 @@ module implementation:
 \URL{https://docs.python.org/3.2/library/re.html}
 
 An error inside Python \Prog{re} module will result in a logged exit
+
+
+\section{Examples}
+%%%%%%%%%%%%%%%
+
 
 \section{Files}
 %%%%%%%%%%%%%%%
