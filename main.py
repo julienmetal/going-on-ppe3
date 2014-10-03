@@ -30,7 +30,7 @@ class appendTypeQuantity(argparse.Action):
             logging.debug(values)
             setattr(namespace, self.dest, [values])
 
-        
+
 def parsingCLI():
     global mes_args
     mon_parser_general = argparse.ArgumentParser()
@@ -98,7 +98,7 @@ def parsingCLI():
 ''' Main bloc'''
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s %(filename)s(%(process)s) %(levelname)s:%(message)s')
-    
+
     global mes_args
     global my_error
 
