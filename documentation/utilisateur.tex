@@ -3,9 +3,9 @@
 % Auteur  : Gregory DAVID
 %%
 
-\documentclass[french]{article}
+\documentclass[english]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[french]{babel}
+\usepackage[english]{babel}
 \usepackage{latex2man}
 
 %% avons-nous le package 'gitinfo' ?
@@ -68,7 +68,7 @@ Options ares described in section OPTIONS.
 %                         Output format {m3u,xspf,pls} followed by filename
 %                         (absolute or relative path, or '-' for stdout)
 
-\begin{Description}\setlength{\itemsep}{0cm}
+\begin{Description}[xxxxxxxxx]%\setlength{\itemsep}{0cm}
     \item[\Opt{-h}\Bar\Opt{--help}] show this help message and exit
     % \item[\Opt{-V}] Affiche les informations de version.
 
@@ -76,6 +76,9 @@ Options ares described in section OPTIONS.
     length, in minutes
     \item[\OptArg{--log }{DEBUG\Bar INFO\Bar WARNING\Bar ERROR\Bar CRITICAL}]
     Defines the log level
+    \item[\OptArg{--output}{m3u\Bar xspf\Bar pls} \Arg{FILENAME}] Sets
+    the output format, one of {m3u,xspf,pls}, and defines the
+    \Arg{FILENAME} to save playlist to
 
 
     \item[\Opt{-g}\Bar\Opt{--genre} \Arg{GENRE} \Arg{QUANTITY}] genre
@@ -111,6 +114,28 @@ Options ares described in section OPTIONS.
     to playlist, followed by the \% quantity (see RULES, REGEXP)
 \end{Description}
 
+
+\section{Database structure}
+The standard database structure is as following:
+\begin{verbatim}
+CREATE TABLE morceaux (
+    titre text,
+    album text,
+    artiste text,
+    genre text,
+    sousgenre text,
+    duree integer,
+    format text,
+    polyphonie integer,
+    chemin text NOT NULL
+);
+ALTER TABLE ONLY morceaux
+    ADD CONSTRAINT pk_morceaux PRIMARY KEY (chemin);
+\end{verbatim}
+
+You can eventually change the structure and use your own, but you have
+to redefine the corresponding use inside the program. Actually, there
+is no simple way to do that, but alter the original source code.
 
 \section{Rules}
 %%%%%%%%%%%%%%
