@@ -46,6 +46,12 @@ class CLI(object):
         self.mon_parser_general.add_argument("--log",
                                              choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
                                              default='WARNING')
+        self.mon_parser_general.add_argument("--log-filename",
+                                             nargs='?',
+                                             type=str,
+                                             metavar="FILENAME",
+                                             const="output.log",
+                                             help="Output logging filename")
         self.mon_parser_general.add_argument("--output",
                                              nargs=2,
                                              metavar=("{"+','.join(format for format in conf.liste_des_formats_de_sortie)+"}", 'FILENAME'),
