@@ -47,8 +47,10 @@ class CLI(object):
                                              choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
                                              default='WARNING')
         self.mon_parser_general.add_argument("--log-filename",
+                                             nargs='?',
                                              type=str,
                                              metavar="FILENAME",
+                                             const="output.log",
                                              help="Output logging filename")
         self.mon_parser_general.add_argument("--output",
                                              nargs=2,
