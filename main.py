@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     command_line = toolbox.cli.CLI()
     command_line.performParsingCLI()
-    
+
     if command_line.arguments.log_filename is not None:
         fileLoggerFormat = logging.Formatter('%(asctime)s %(filename)s(%(process)s) %(levelname)s:%(message)s')
         fileLoggerHandler = logging.FileHandler(command_line.arguments.log_filename)
