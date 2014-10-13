@@ -15,7 +15,7 @@ class appendTypeQuantity(argparse.Action):
             quantity = abs(int(values[1]))
             values[1] = quantity if 100 >= quantity > 0 else None
         except ValueError:
-            logging.error("Quantity Input value is Not A Number (NaN): '" + quantite + "'")
+            logging.error("Quantity Input value is Not A Number (NaN): '" + quantity + "'")
             sys.exit(1)
         current_dest_value = getattr(namespace, self.dest)
         if type(current_dest_value) is list:
