@@ -14,10 +14,12 @@ class appendTypeQuantity(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         try:
             quantity = abs(int(values[1]))
-            values[1] = quantity if 100 >= quantity > 0 else None
         except ValueError:
-            logging.error("Quantity Input value is Not A Number (NaN): '" + values[1] + "'")
-            sys.exit(1)
+            logging.warning("Quantity Input value is Not A Number (NaN): '" + values[1] + "'. Using None instead, and apply rules (see man page)")
+            values[1] = None
+        else:
+            values[1] = quantity if quantity <= 100 else None
+
         current_dest_value = getattr(namespace, self.dest)
         if type(current_dest_value) is list:
             current_dest_value.append(values)

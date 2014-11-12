@@ -5,6 +5,7 @@ import sys
 import logging
 import toolbox.configuration as conf
 import toolbox.cli
+from toolbox.database import connection
 
 if __name__ == "__main__":
     screenLoggerFormat = logging.Formatter('%(levelname)s:%(message)s')
