@@ -61,54 +61,21 @@ class CLI(object):
                                              help="Output format {"+','.join(format for format in conf.liste_des_formats_de_sortie)+"} followed by filename (absolute or relative path, or '-' for stdout)",
                                              default=['m3u','-'])
 
-        self.non_regexp_group.add_argument("-g", "--genre",
+        for Argument in conf.dictArgumentsCLI:
+            currentArgument = conf.dictArgumentsCLI[Argument]
+            self.non_regexp_group.add_argument(currentArgument['short'],
+                                               currentArgument['long'],
+                                               action=appendTypeQuantity,
+                                               dest=Argument,
+                                               nargs=2,
+                                               metavar=(currentArgument['metavar'], 'QUANTITY'),
+                                               help=currentArgument['help']
+                                           )
+            self.regexp_group.add_argument(currentArgument['short'].upper(),
+                                           currentArgument['long'].upper(),
                                            action=appendTypeQuantity,
+                                           dest=Argument,
                                            nargs=2,
-                                           metavar=('GENRE','QUANTITY'),
-                                           help="Genre to be included to playlist, followed by the %% quantity")
-        self.non_regexp_group.add_argument("-s", "--sub-genre",
-                                           action=appendTypeQuantity,
-                                           nargs=2,
-                                           metavar=('SUB_GENRE','QUANTITY'),
-                                           help="Sub-genre to be included to playlist, followed by the %% quantity")
-        self.non_regexp_group.add_argument("-b", "--band",
-                                           action=appendTypeQuantity,
-                                           nargs=2,
-                                           metavar=('BAND_NAME','QUANTITY'),
-                                           help="Band or artist name to be included in playlist, followed by the %% quantity")
-        self.non_regexp_group.add_argument("-a", "--album",
-                                           action=appendTypeQuantity,
-                                           nargs=2,
-                                           metavar=('ALBUM_NAME','QUANTITY'),
-                                           help="Album title to be included in playlist, followed by the %% quantity")
-        self.non_regexp_group.add_argument("-t", "--title",
-                                           action=appendTypeQuantity,
-                                           nargs=2,
-                                           metavar=('TRACK_TITLE','QUANTITY'),
-                                           help="Track title to be included in playlist, followed by the %% quantity")
-
-        self.regexp_group.add_argument("-G", "--RE-genre",
-                                       action=appendTypeQuantity,
-                                       nargs=2,
-                                       metavar=('GENRE','QUANTITY'),
-                                       help="Genre to be included to playlist, followed by the %% quantity")
-        self.regexp_group.add_argument("-S", "--RE-sub-genre",
-                                       action=appendTypeQuantity,
-                                       nargs=2,
-                                       metavar=('SUB_GENRE','QUANTITY'),
-                                       help="Sub-genre to be included to playlist, followed by the %% quantity")
-        self.regexp_group.add_argument("-B", "--RE-band",
-                                       action=appendTypeQuantity,
-                                       nargs=2,
-                                       metavar=('BAND_NAME','QUANTITY'),
-                                       help="Band or artist name to be included in playlist, followed by the %% quantity")
-        self.regexp_group.add_argument("-A", "--RE-album",
-                                       action=appendTypeQuantity,
-                                       nargs=2,
-                                       metavar=('ALBUM_NAME','QUANTITY'),
-                                       help="Album title to be included in playlist, followed by the %% quantity")
-        self.regexp_group.add_argument("-T", "--RE-title",
-                                       action=appendTypeQuantity,
-                                       nargs=2,
-                                       metavar=('TRACK_TITLE','QUANTITY'),
-                                       help="Track title to be included in playlist, followed by the %% quantity")
+                                           metavar=(currentArgument['metavar'].upper(), 'QUANTITY'),
+                                           help=currentArgument['help']
+                                       )
